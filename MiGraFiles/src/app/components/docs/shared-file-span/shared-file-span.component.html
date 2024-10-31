@@ -1,0 +1,35 @@
+<mat-list-item (click)="onClick()" >
+  <mat-icon *ngIf="doc.type === DocType.DIR" fontIcon="folder"  matListItemIcon></mat-icon>
+  <mat-icon *ngIf="doc.type === DocType.DOC && (doc.extension === 'jpg' || doc.extension === 'png')" fontIcon="insert_photo"  matListItemIcon></mat-icon>
+  <mat-icon *ngIf="doc.type === DocType.DOC && (doc.extension === 'txt' || doc.extension === 'html')" fontIcon="insert_drive_file"  matListItemIcon></mat-icon>
+  <div  class="container d-flex">
+    <div class=" col">
+      <h4 matLine>{{doc.title}}{{doc.extension==null ? '' :"."+ doc.extension}}</h4>
+    </div>
+    <div class="flex-column  justify-content-end">
+      <p>Fecha de Recibido: {{doc.dateShared |  date: 'short'}}</p>
+    </div>
+  </div>
+</mat-list-item>
+<mat-divider></mat-divider>
+
+<ng-template #textTemplate class="container-fluid">
+  <h2 mat-dialog-title>{{doc.title+'.'+doc.extension}}</h2>
+    <mat-dialog-content  style="width: 500px;">
+      <p  formControlName="content" style="box-sizing: border-box; width: 100%;">{{doc.content }}</p>
+    </mat-dialog-content>
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <a class="btn btn-danger" (click)="onClose()">Cerrar</a>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template #imageTemplate>
+  <h2 mat-dialog-title>{{doc.title}}</h2>
+  <mat-dialog-content>
+    <img [src]="doc.image"
+         alt=""/>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <a mat-button (click)="onClose()">Close</a>
+  </mat-dialog-actions>
+</ng-template>

@@ -1,0 +1,117 @@
+<div class="container d-flex">
+  <div class="col">
+    <p (click)="goBack()" *ngIf="localPath!='raiz'">
+      <mat-icon>keyboard_backspace</mat-icon>
+    </p>
+    <h2 mat-line>/{{localPath}}</h2>
+  </div>
+  <div class="flex-column  justify-content-end">
+    <button class="btn btn-primary m-1" (click)="openDirModal()">
+      Nuevo Folder
+    </button>
+    <button class="btn btn-secondary" (click)="openTextModal()">
+      Nuevo Archivo
+    </button>
+    <button class="btn btn-success m-1" (click)="openImageModal()">
+      Nueva Imagen
+    </button>
+  </div>
+</div>
+<mat-nav-list >
+  <app-file-span *ngFor="let doc of docs " [doc]=doc></app-file-span>
+
+</mat-nav-list>
+<ng-template #nuevoDoc>
+  <h2 mat-dialog-title>Nuevo Documento</h2>
+  <form [formGroup]="textForm" (ngSubmit)="submitText()">
+  <mat-dialog-content>
+    <div class="form-group">
+      <label class="text"> Ingresa el nombre del archivo, no debe contener caracteres especiales</label>
+      <input class="form-control" placeholder="Nombre" formControlName = "title"
+             [class.is-invalid]="textForm.controls['title'].invalid && textForm.controls['title'].touched">
+      <div *ngIf="textForm.controls['title'].invalid &&  (textForm.controls['title'].dirty || textForm.controls['title'].touched)"
+           class="invalid-feedback">
+        Por favor ingrese un Nombre valido.
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="text"> Ingresa el contenido del archivo</label>
+      <textarea class="form-control" type="text" placeholder="Contenido" formControlName = "content"
+             [class.is-invalid]="textForm.controls['content'].invalid && textForm.controls['content'].touched"></textarea>
+        <div *ngIf="textForm.controls['content'].invalid &&  (textForm.controls['content'].dirty || textForm.controls['content'].touched)"
+           class="invalid-feedback">
+        Por favor ingrese texto valido.
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="text">Selecciona la extension del archivo</label>
+      <select class="form-control" formControlName = "extension" >
+        <option selected value="txt">.txt</option>
+        <option value="html">.html</option>
+      </select>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button  class="btn btn-primary" type="submit">Guardar</button>
+    <button class="btn btn-danger" (click)="onClose()">Close</button>
+  </mat-dialog-actions>
+  </form>
+</ng-template>
+
+<ng-template #nuevaImagen>
+  <h2 mat-dialog-title>Nueva Imagen</h2>
+  <form [formGroup]="imageForm" (ngSubmit)="submitImage()">
+
+  <mat-dialog-content>
+      <div class="form-group">
+        <label class="text"> Ingresa el nombre de la imagen, no debe contener caracteres especiales</label>
+
+        <input class="form-control" placeholder="Nombre" formControlName = "title"
+               [class.is-invalid]="imageForm.controls['title'].invalid && imageForm.controls['title'].touched">
+        <div *ngIf="imageForm.controls['title'].invalid &&  (imageForm.controls['title'].dirty || imageForm.controls['title'].touched)"
+             class="invalid-feedback">
+          Por favor ingrese un Nombre valido.
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="text">Selecciona la imagen</label>
+        <input type="file" (change)="onFileSelected($event)">
+      </div>
+      <div class="form-group">
+        <label class="text">Selecciona la extension del archivo</label>
+        <select class="form-control" formControlName = "extension" >
+          <option selected value="png">.png</option>
+          <option value="jpg">.jpg</option>
+        </select>
+      </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button class="btn-primary" type="submit">Guardar</button>
+    <button mat-button (click)="onClose()">Close</button>
+
+  </mat-dialog-actions>
+  </form>
+
+</ng-template>
+
+<ng-template #nuevoDir>
+  <h2 mat-dialog-title>Nuevo Folder</h2>
+  <form [formGroup]="dirForm" (ngSubmit)="submitDir()">
+  <mat-dialog-content>
+    <div class="form-group">
+      <label class="text"> Ingresa el nombre del folder, no debe contener caracteres especiales</label>
+      <input class="form-control" placeholder="Nombre" formControlName = "title"
+             [class.is-invalid]="dirForm.controls['title'].invalid && dirForm.controls['title'].touched">
+      <div *ngIf="dirForm.controls['title'].invalid &&  (dirForm.controls['title'].dirty || dirForm.controls['title'].touched)"
+           class="invalid-feedback">
+        Por favor ingrese un Nombre valido.
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button class="btn-primary" type="submit" [disabled]="dirForm.invalid">Guardar</button>
+    <button mat-button (click)="onClose()">Close</button>
+  </mat-dialog-actions>
+  </form>
+
+</ng-template>

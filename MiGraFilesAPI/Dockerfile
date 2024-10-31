@@ -8,7 +8,7 @@ COPY . .
 # Compile the project
 RUN mvn clean package
 
-FROM tomcat:10.1.12-jdk21-openjdk
+FROM tomcat:latest
 COPY --from=build /home/okkid-a/Documents/Archivos/GraFiles/MiGraFilesAPI/target/MiGraFilesAPI-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/
 # Expose the port the web server is running on
 EXPOSE 8080

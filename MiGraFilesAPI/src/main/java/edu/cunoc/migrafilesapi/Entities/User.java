@@ -1,7 +1,7 @@
 package edu.cunoc.migrafilesapi.Entities;
 
 public class User {
-    private int cui;
+    private int _id;
     private String username;
     private String nombre;
     private String email;
@@ -27,12 +27,12 @@ public class User {
         this.password = password;
     }
 
-    public int getCui() {
-        return cui;
+    public int get_id() {
+        return _id;
     }
 
-    public void setCui(int cui) {
-        this.cui = cui;
+    public void set_id(int _id) {
+        this._id = _id;
     }
 
     public String getUsername() {

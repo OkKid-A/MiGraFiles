@@ -1,0 +1,8 @@
+<div class="container d-flex">
+  <div class="col">
+    <h2 mat-line>Archivos Compartidos Contigo</h2>
+  </div>
+</div>
+<mat-nav-list >
+  <app-shared-file-span *ngFor="let doc of docs " [doc]=doc></app-shared-file-span>
+</mat-nav-list>

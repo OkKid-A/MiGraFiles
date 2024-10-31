@@ -1,0 +1,82 @@
+<mat-list-item (click)="onClick()" >
+  <mat-icon *ngIf="doc.type === DocType.DIR" fontIcon="folder"  matListItemIcon></mat-icon>
+  <mat-icon *ngIf="doc.type === DocType.DOC && (doc.extension === 'jpg' || doc.extension === 'png')" fontIcon="insert_photo"  matListItemIcon></mat-icon>
+  <mat-icon *ngIf="doc.type === DocType.DOC && (doc.extension === 'txt' || doc.extension === 'html')" fontIcon="insert_drive_file"  matListItemIcon></mat-icon>
+<div  class="container d-flex">
+<div class=" col">
+  <h4 matLine>{{doc.title}}{{doc.extension==null ? '' :"."+ doc.extension}}</h4>
+</div>
+  <div class="flex-column  justify-content-end">
+    <a mat-button *ngIf="doc.type !== DocType.DIR" (click)="compartir($event)" style="background-color: #314c84 ;" class="m-1" >Compartir</a>
+    <a mat-button (click)="copiar($event)" style="background-color: #2869a5 ;" class="m-1" >Copiar</a>
+    <a mat-button (click)="eliminar($event)" style="background-color: #b881cc;" >Eliminar</a>
+  </div>
+</div>
+</mat-list-item>
+<mat-divider></mat-divider>
+
+<ng-template #textTemplate class="container-fluid">
+  <h2 mat-dialog-title>{{doc.title+'.'+doc.extension}}</h2>
+  <form [formGroup]="saveForm" (ngSubmit)="saveChanges()">
+    <mat-form-field appearance="fill" style="width: 500px;">
+      <textarea matInput formControlName="content" style="box-sizing: border-box; width: 100%;">{{doc.content}}</textarea>
+      <div *ngIf="saveForm.controls['content'].invalid &&  (saveForm.controls['content'].dirty || saveForm.controls['content'].touched)"
+           class="invalid-feedback">
+        Por favor ingrese un texto valido.
+      </div>
+    </mat-form-field>
+  <mat-dialog-actions class="d-flex justify-content-center">
+    <button class="btn btn-success m-1" type="submit">Guardar</button>
+    <a class="btn btn-danger" (click)="onClose()">Cerrar</a>
+  </mat-dialog-actions>
+  </form>
+</ng-template>
+
+<ng-template #imageTemplate>
+  <h2 mat-dialog-title>{{doc.title}}</h2>
+  <mat-dialog-content>
+    <img [src]="doc.image"
+     alt=""/>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="editImage()">Editar</button>
+    <a mat-button (click)="onClose()">Close</a>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #nuevaImagen>
+<h2 mat-dialog-title>Editar Imagen</h2>
+<form [formGroup]="imageForm" (ngSubmit)="submitImage()">
+
+  <mat-dialog-content>
+    <div class="form-group">
+      <label class="text">Selecciona la imagen</label>
+      <input type="file" (change)="onFileSelected($event)">
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button class="btn-primary" type="submit">Guardar</button>
+    <button mat-button (click)="onClose()">Close</button>
+
+  </mat-dialog-actions>
+</form>
+</ng-template>
+
+<ng-template #shareTemplate class="container-fluid">
+  <form [formGroup]="shareForm" (ngSubmit)="submitShareholder()">
+    <mat-dialog-content appearance="fill" style="width: 500px;">
+      <h5 style="color: white">Ingresa el Nombre del Usuario al que deseas compartirle</h5>
+      <input   class="form-control" placeholder="Usuario" formControlName = "shareholder"
+             [class.is-invalid]="shareForm.controls['shareholder'].invalid && shareForm.controls['shareholder'].touched">
+      <div *ngIf="shareForm.controls['shareholder'].invalid &&  (shareForm.controls['shareholder'].dirty || shareForm.controls['shareholder'].touched)"
+           class="invalid-feedback">
+        Por favor ingrese un Nombre valido.
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <button class="btn btn-success m-1" type="submit">Guardar</button>
+      <a class="btn btn-danger" (click)="closeShare()">Cerrar</a>
+    </mat-dialog-actions>
+  </form>
+</ng-template>
+

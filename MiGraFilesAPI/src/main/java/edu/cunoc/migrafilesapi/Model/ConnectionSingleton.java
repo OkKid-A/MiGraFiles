@@ -7,11 +7,11 @@ import com.mongodb.client.MongoDatabase;
 public class ConnectionSingleton {
     private static ConnectionSingleton instance;
     private MongoDatabase database;
+    private MongoClient mongoClient;
 
     private ConnectionSingleton(){
-        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27018")){
-            this.database = mongoClient.getDatabase("MiGraFiles");
-        }
+        this.mongoClient = MongoClients.create("mongodb://localhost:27018");
+        this.database = mongoClient.getDatabase("MiGraFiles");
     }
 
     public static synchronized ConnectionSingleton getInstance() {
@@ -23,5 +23,11 @@ public class ConnectionSingleton {
 
     public MongoDatabase getDatabase() {
         return database;
+    }
+
+    public void close(){
+        if (mongoClient != null) {
+            mongoClient.close();
+        }
     }
 }
